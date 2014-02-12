@@ -5,6 +5,8 @@ ARCH=$2
 SMP=$3
 PREEMPT=$4
 CC=$5
+hbover=$(cat /home/pst-kubuntu/Pulpit/android/kernel/omni44/version)
+hbodata=$(date '+%Y%m%d')
 
 vecho() { [ "${quiet}" = "silent_" ] || echo "$@" ; }
 
@@ -73,8 +75,8 @@ UTS_TRUNCATE="cut -b -$UTS_LEN"
 
   echo \#define UTS_VERSION \"`echo $UTS_VERSION | $UTS_TRUNCATE`\"
 
-  echo \#define LINUX_COMPILE_BY \"`echo $LINUX_COMPILE_BY | $UTS_TRUNCATE`\"
-  echo \#define LINUX_COMPILE_HOST \"`echo $LINUX_COMPILE_HOST | $UTS_TRUNCATE`\"
+  echo \#define LINUX_COMPILE_BY \"Boeffla-Kernel-OMNI-$hbover-$hbodata\"
+  echo \#define LINUX_COMPILE_HOST \"Kubuntu\"
 
   echo \#define LINUX_COMPILER \"`$CC -v 2>&1 | tail -n 1`\"
 ) > .tmpcompile
