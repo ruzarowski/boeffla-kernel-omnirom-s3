@@ -27,6 +27,8 @@ BOEFFLA_STARTCONFIG="/data/.boeffla/startconfig"
 BOEFFLA_STARTCONFIG_DONE="/data/.boeffla/startconfig_done"
 CWM_RESET_ZIP="boeffla-config-reset-v2.zip"
 INITD_ENABLER="/data/.boeffla/enable-initd"
+BUSYBOX_ENABLER="/data/.boeffla/enable-busybox"
+FRANDOM_ENABLER="/data/.boeffla/enable-frandom"
 
 
 # If not yet exists, create a boeffla-kernel-data folder on sdcard 
@@ -51,14 +53,41 @@ INITD_ENABLER="/data/.boeffla/enable-initd"
 	/sbin/busybox grep ro.build.version /system/build.prop >> $BOEFFLA_LOGFILE
 	echo "=========================" >> $BOEFFLA_LOGFILE
 
-# If rom comes without mount command in /system/bin folder, create busybox symlinks for mount/umount
-	if [ ! -f /system/bin/mount ]; then
-		/sbin/busybox mount -o remount,rw rootfs /
-		/sbin/busybox ln /sbin/busybox /sbin/mount
-		/sbin/busybox ln /sbin/busybox /sbin/umount
-		/sbin/busybox mount -o remount,ro rootfs /
-		echo $(date) "Rom does not come with mount command, symlinks created" > $BOEFFLA_LOGFILE
+# Activate frandom entropy generator if configured
+	if [ -f $FRANDOM_ENABLER ]; then
+		echo $(date) "Frandom entropy generator activation requested" >> $BOEFFLA_LOGFILE
+		/sbin/busybox insmod /lib/modules/frandom.ko
+		/sbin/busybox insmod /system/lib/modules/frandom.ko
+
+		if [ ! -e /dev/urandom.ORIG ] && [ ! -e /dev/urandom.orig ] && [ ! -e /dev/urandom.ori ]; then
+			/sbin/busybox touch /dev/urandom.MOD
+			/sbin/busybox touch /dev/random.MOD
+			/sbin/busybox mv /dev/urandom /dev/urandom.ORIG
+			/sbin/busybox ln /dev/erandom /dev/urandom
+			/sbin/busybox busybox chmod 644 /dev/urandom
+			/sbin/busybox mv /dev/random /dev/random.ORIG
+			/sbin/busybox ln /dev/erandom /dev/random
+			/sbin/busybox busybox chmod 644 /dev/random
+			/sbin/busybox sleep 0.5s
+			/sbin/busybox sync
+			echo $(date) "Frandom entropy generator activated" >> $BOEFFLA_LOGFILE
+		fi
 	fi
+
+# Install busybox applet symlinks to /system/xbin if enabled,
+# otherwise only install mount/umount/top symlinks
+	mount -o remount,rw -t ext4 $SYSTEM_DEVICE /system
+	if [ -f $BUSYBOX_ENABLER ]; then
+		/sbin/busybox --install -s /system/xbin
+		echo $(date) "Busybox applet symlinks installed to /system/xbin" >> $BOEFFLA_LOGFILE
+	else
+		/sbin/busybox ln -s /sbin/busybox /system/xbin/mount
+		/sbin/busybox ln -s /sbin/busybox /system/xbin/umount
+		/sbin/busybox ln -s /sbin/busybox /system/xbin/top
+		echo $(date) "Mount/umount/top applet symlinks installed to /system/xbin" >> $BOEFFLA_LOGFILE
+	
+	fi
+	mount -o remount,ro -t ext4 $SYSTEM_DEVICE /system
 		
 # Correct /sbin and /res directory and file permissions
 	mount -o remount,rw rootfs /
@@ -131,11 +160,13 @@ INITD_ENABLER="/data/.boeffla/enable-initd"
 	echo $(date) "AC charge rate set to 1100 mA" >> $BOEFFLA_LOGFILE
 
 # init.d support, only if enabled in settings or file in data folder
+# (zipalign scripts will not be executed as only exception)
 	if [ "CM" != "$KERNEL" ] || [ -f $INITD_ENABLER ] ; then
 		echo $(date) Execute init.d scripts start >> $BOEFFLA_LOGFILE
 		if cd /system/etc/init.d >/dev/null 2>&1 ; then
 			for file in * ; do
 				if ! cat "$file" >/dev/null 2>&1 ; then continue ; fi
+				if [[ "$file" == *zipalign* ]]; then continue ; fi
 				echo $(date) init.d file $file started >> $BOEFFLA_LOGFILE
 				/system/bin/sh "$file"
 				echo $(date) init.d file $file executed >> $BOEFFLA_LOGFILE
