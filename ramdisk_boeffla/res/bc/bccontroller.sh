@@ -740,7 +740,7 @@ if [ "apply_governor_profile" == "$1" ]; then
 	fi
 
 	if [ "zzmoove - standard" == "$2" ]; then
-		echo "1" > /sys/devices/system/cpu/cpufreq/zzmoove/profile_number
+		echo "7" > /sys/devices/system/cpu/cpufreq/zzmoove/profile_number
 
 		busybox sleep 0.5s
 		busybox sync
