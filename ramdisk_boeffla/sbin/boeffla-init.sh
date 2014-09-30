@@ -10,10 +10,10 @@
 	# path to internal sd memory
 	SD_PATH="/data/media/0"
 
-	# block devices
-	SYSTEM_DEVICE="/dev/block/mmcblk0p9"
-	CACHE_DEVICE="/dev/block/mmcblk0p8"
-	DATA_DEVICE="/dev/block/mmcblk0p12"
+# block devices
+	SYSTEM_DEVICE="/dev/block/mmcblk0p13"
+	CACHE_DEVICE="/dev/block/mmcblk0p12"
+	DATA_DEVICE="/dev/block/mmcblk0p16"
 
 # define file paths
 	BOEFFLA_DATA_PATH="$SD_PATH/boeffla-kernel-data"

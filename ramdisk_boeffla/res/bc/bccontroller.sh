@@ -11,7 +11,7 @@
 # ********************************
 
 # kernel specification (hardware; type; target; url)
-KERNEL_SPECS="i9300;cm;omni11;http://boeffla.df-kunde.de/sgs3/boeffla-kernel-omni/"
+KERNEL_SPECS="i9305;cm;omni11;-"
 
 # kernel features 
 # (1=enable-busybox,2=enable-frandom,3=wipe-cache,4=disable-zram-control)
@@ -22,12 +22,12 @@ KERNEL_FEATURES="-1-2-3-"
 LIBPATH="/system/lib/modules"
 
 # block devices
-SYSTEM_DEVICE="/dev/block/mmcblk0p9"
-CACHE_DEVICE="/dev/block/mmcblk0p8"
-DATA_DEVICE="/dev/block/mmcblk0p12"
-BOOT_DEVICE="/dev/block/mmcblk0p5"
-RADIO_DEVICE="/dev/block/mmcblk0p7"
-RECOVERY_DEVICE="/dev/block/mmcblk0p6"
+SYSTEM_DEVICE="/dev/block/mmcblk0p13"
+CACHE_DEVICE="/dev/block/mmcblk0p12"
+DATA_DEVICE="/dev/block/mmcblk0p16"
+BOOT_DEVICE="/dev/block/mmcblk0p8"
+RADIO_DEVICE="/dev/block/mmcblk0p10"
+RECOVERY_DEVICE="/dev/block/mmcblk0p9"
 
 
 # *******************
@@ -60,7 +60,7 @@ if [ "lov_gpu_freq" == "$1" ]; then
 fi
 
 if [ "lov_eq_gain_profiles" == "$1" ]; then
-	echo "Archis audiophile;Baseland;Bass extreme;Bass treble;Classic;Dance;Eargasm;Metal/Rock;Pleasant;Treble"
+	echo "Archis audiophile;Baseland;Bass extreme;Bass treble;Classic;Dance;Eargasm;Hbohd;Metal/Rock;Pleasant;PST;Treble"
 	exit 0
 fi
 
@@ -105,6 +105,18 @@ if [ "lov_presets" == "$1" ]; then
 	echo "^Sched: zen / zen"
 	echo "^CPU: 1000 / light uv"
 	echo "^GPU: 160/266 / light uv;"
+
+	echo "Hbohd preset~"
+	echo "Gov: zzmoove / zzmoove-extreme battery yank"
+	echo "^Sched: zen / zen"
+	echo "^CPU: 1200 / medium uv"
+	echo "^GPU: 266/350 / medium uv;"
+	
+	echo "Pst preset~"
+	echo "Gov: zzmoove / zzmoove-optimal"
+	echo "^Sched: row / row"
+	echo "^CPU: 1400 / light uv"
+	echo "^GPU: 160-533 / light uv;"
 	
 	exit 0
 fi
@@ -149,6 +161,20 @@ if [ "conf_presets" == "$1" ]; then
 		echo "zen;zen;"
 		echo "1000000;undervolt light;"
 		echo "160/266;undervolt light"
+	fi
+	if [ "Hbohd preset" ==  "$2" ]; then
+		# gov, gov prof, sched int, sched ext, cpu max, cpu uv, gpu freq, gpu uv
+		echo "zzmoove;zzmoove - battery extreme yank;"
+		echo "zen;zen;"
+		echo "1200000;undervolt medium;"
+		echo "266/350;undervolt medium"
+	fi
+	if [ "Pst preset" ==  "$2" ]; then
+		# gov, gov prof, sched int, sched ext, cpu max, cpu uv, gpu freq, gpu uv
+		echo "zzmoove;zzmoove - optimal;"
+		echo "row;row;"
+		echo "1400000;undervolt light;"
+		echo "None;undervolt light"
 	fi
 	exit 0
 fi
@@ -261,11 +287,17 @@ if [ "conf_eq_gains" == "$1" ]; then
 	if [ "Archis audiophile" ==  "$2" ]; then
 		echo "8;4;4;2;6"
 	fi
+	if [ "Hbohd" ==  "$2" ]; then
+		echo "9;7;4;4;5"
+	fi
 	if [ "Eargasm" ==  "$2" ]; then
 		echo "12;8;4;2;3"
 	fi
 	if [ "Pleasant" ==  "$2" ]; then
 		echo "4;3;2;2;3"
+	fi
+	if [ "PST" ==  "$2" ]; then
+		echo "6;4;4;2;4"
 	fi
 	if [ "Classic" ==  "$2" ]; then
 		echo "0;0;0;-3;-5"
@@ -709,7 +741,7 @@ if [ "apply_governor_profile" == "$1" ]; then
 	fi
 
 	if [ "zzmoove - standard" == "$2" ]; then
-		echo "1" > /sys/devices/system/cpu/cpufreq/zzmoove/profile_number
+		echo "7" > /sys/devices/system/cpu/cpufreq/zzmoove/profile_number
 
 		busybox sleep 0.5s
 		busybox sync
