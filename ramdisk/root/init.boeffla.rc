@@ -1,0 +1,37 @@
+on early-init
+    # allow system UID to setenforce and set booleans
+    chown system system /selinux/enforce
+    chown system system /sys/fs/selinux/enforce
+    chown -R system system /selinux/booleans
+    chown -R system system /sys/fs/selinux/booleans
+    chown system system /selinux/commit_pending_bools
+    chown system system /sys/fs/selinux/commit_pending_bools
+
+on post-fs
+    chmod 0771 /cache
+
+on post-fs-data
+    restorecon_recursive /data/misc/media
+    mkdir /cache/dalvik-cache 0771 system system
+    chown system system /data/dalvik-cache
+    chmod 0771 /data/dalvik-cache
+
+on property:selinux.reload_policy=1
+    chown -R system system /selinux/booleans
+    chown -R system system /sys/fs/selinux/booleans
+
+# Call Boeffla-Kernel init script
+service boeffla-init /sbin/boeffla-init.sh
+    class main
+    user root
+    group root
+    oneshot
+
+service playlpm /system/bin/playlpm
+    user root
+
+service immvibed /system/bin/immvibed
+    oneshot
+
+service lpmkey /system/bin/lpmkey
+    user root
