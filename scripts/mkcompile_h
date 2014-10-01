@@ -5,8 +5,8 @@ ARCH=$2
 SMP=$3
 PREEMPT=$4
 CC=$5
-hbover=$(cat ~/aS3/kernel_omni/version)
-hbodata=$(date '+%Y%m%d')
+hbover='2.4b4'
+hbodata=$(date '+%Y%m%d%H%M%S')
 
 vecho() { [ "${quiet}" = "silent_" ] || echo "$@" ; }
 
@@ -75,8 +75,8 @@ UTS_TRUNCATE="cut -b -$UTS_LEN"
 
   echo \#define UTS_VERSION \"`echo $UTS_VERSION | $UTS_TRUNCATE`\"
 
-  echo \#define LINUX_COMPILE_BY \"Boeffla-Kernel-OMNI-$hbover-$hbodata\"
-  echo \#define LINUX_COMPILE_HOST \"HboHD\"
+  echo \#define LINUX_COMPILE_BY \"Boeffla-Kernel-SlimSaber-$hbover-$hbodata\"
+  echo \#define LINUX_COMPILE_HOST \"`hostname`\"
 
   echo \#define LINUX_COMPILER \"`$CC -v 2>&1 | tail -n 1`\"
 ) > .tmpcompile
