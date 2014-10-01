@@ -12,7 +12,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/ramdisk/res/bc/fstrim:root/res/bc/fstrim \
     $(LOCAL_PATH)/ramdisk/res/bc/bccontroller.sh:root/res/bc/bccontroller.sh \
     $(LOCAL_PATH)/ramdisk/root/init.boeffla.rc:root/init.boeffla.rc \
-    $(LOCAL_PATH)/ramdisk/root/init.boeffla.rc:root/init.rc
+    $(LOCAL_PATH)/ramdisk/root/init.rc:root/init.rc
 
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.adb.secure=0 \
