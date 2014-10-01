@@ -5,7 +5,7 @@ ARCH=$2
 SMP=$3
 PREEMPT=$4
 CC=$5
-hbover='2.4b5'
+hbover='2.4b6'
 hbodata=$(date '+%Y%m%d%H%M%S')
 
 vecho() { [ "${quiet}" = "silent_" ] || echo "$@" ; }
