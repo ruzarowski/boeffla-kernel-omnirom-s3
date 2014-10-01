@@ -24,7 +24,7 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 .PHONY: modifyinitrc
 
 modifyinitrc: $(PRODUCT_OUT)/root/init.rc
-    echo '' >> $(PRODUCT_OUT)/root/init.rc
-    echo 'import /init.boeffla.rc' >> $(PRODUCT_OUT)/root/init.rc
-    echo '' >> $(PRODUCT_OUT)/root/init.rc
+	echo '' >> $(PRODUCT_OUT)/root/init.rc
+	echo 'import /init.boeffla.rc' >> $(PRODUCT_OUT)/root/init.rc
+	echo '' >> $(PRODUCT_OUT)/root/init.rc
     
