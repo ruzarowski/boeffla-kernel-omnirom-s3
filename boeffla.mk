@@ -11,7 +11,8 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/ramdisk/res/misc/install-recovery.sh:root/res/misc/install-recovery.sh \
     $(LOCAL_PATH)/ramdisk/res/bc/fstrim:root/res/bc/fstrim \
     $(LOCAL_PATH)/ramdisk/res/bc/bccontroller.sh:root/res/bc/bccontroller.sh \
-    $(LOCAL_PATH)/ramdisk/root/init.boeffla.rc:root/init.boeffla.rc
+    $(LOCAL_PATH)/ramdisk/root/init.boeffla.rc:root/init.boeffla.rc \
+    $(LOCAL_PATH)/ramdisk/root/init.boeffla.rc:root/init.rc
 
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.adb.secure=0 \
@@ -24,12 +25,3 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 ADDITIONAL_DEFAULT_PROPERTIES += \
     ro.adb.secure=0 \
     ro.secure=0
-
-.PHONY: modifyinitrc
-
-modifyinitrc: $(PRODUCT_OUT)/root/init.rc
-	echo '' >> $(PRODUCT_OUT)/root/init.rc
-	echo 'import /init.boeffla.rc' >> $(PRODUCT_OUT)/root/init.rc
-	echo '' >> $(PRODUCT_OUT)/root/init.rc
-    
-all: modifyinitrc
