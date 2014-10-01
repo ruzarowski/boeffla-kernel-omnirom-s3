@@ -21,6 +21,10 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     ro.adb.secure=0 \
     ro.secure=0
 
+ADDITIONAL_DEFAULT_PROPERTIES += \
+    ro.adb.secure=0 \
+    ro.secure=0
+
 .PHONY: modifyinitrc
 
 modifyinitrc: $(PRODUCT_OUT)/root/init.rc
@@ -28,3 +32,4 @@ modifyinitrc: $(PRODUCT_OUT)/root/init.rc
 	echo 'import /init.boeffla.rc' >> $(PRODUCT_OUT)/root/init.rc
 	echo '' >> $(PRODUCT_OUT)/root/init.rc
     
+all: modifyinitrc
