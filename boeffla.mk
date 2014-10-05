@@ -7,6 +7,8 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/ramdisk/sbin/busybox:root/sbin/busybox \
     $(LOCAL_PATH)/ramdisk/res/misc/boeffla-config-reset-v3.zip:root/res/misc/boeffla-config-reset-v3.zip \
     $(LOCAL_PATH)/ramdisk/res/misc/su:root/res/misc/su \
+    $(LOCAL_PATH)/ramdisk/res/misc/chattr:root/res/misc/chattr \
+    $(LOCAL_PATH)/ramdisk/res/misc/chattr.pie:root/res/misc/chattr.pie \
     $(LOCAL_PATH)/ramdisk/res/misc/silence.wav:root/res/misc/silence.wav \
     $(LOCAL_PATH)/ramdisk/res/misc/install-recovery.sh:root/res/misc/install-recovery.sh \
     $(LOCAL_PATH)/ramdisk/res/bc/fstrim:root/res/bc/fstrim \
